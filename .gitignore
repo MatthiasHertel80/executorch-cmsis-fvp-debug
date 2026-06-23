@@ -1,0 +1,11 @@
+# csolution / cbuild generated build artifacts
+RTE/
+out/
+tmp/
+*.cbuild-idx.yml
+*.cbuild-pack.yml
+*.cbuild-set.yml
+*.cbuild-run.yml
+
+# logs
+*.log
