@@ -28,5 +28,14 @@ sudo pip install --no-cache-dir \
   -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ fvp-gdb
 sudo pip install --no-cache-dir pyocd
 
+echo ">> Installing the bundled ExecuTorch CMSIS pack ..."
+grep -q CMSIS_PACK_ROOT ~/.bashrc || \
+  echo 'export CMSIS_PACK_ROOT="$HOME/.cache/arm/packs"' >> ~/.bashrc
+# postCreate runs with cwd = workspace folder.
+if [ -f scripts/setup-packs.sh ]; then
+  bash scripts/setup-packs.sh || \
+    echo "   pack install skipped/failed; run scripts/setup-packs.sh once the container is up."
+fi
+
 echo ">> Done. Sanity check:"
 command -v FVP_Corstone_SSE-300 cbuild fvp-gdb pyocd arm-none-eabi-gdb || true

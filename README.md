@@ -12,22 +12,27 @@ working virtual debug target with no physical hardware.
 .devcontainer/            Arm toolchain + avh-fvp (vcpkg) + fvp-gdb + pyocd
 .vscode/                  FVP: Start/Stop tasks, fvp-gdb attach launch config
 cmsis-all-ops-project/    the csolution project (one model per op)
+packs/                    bundled PyTorch.ExecuTorch CMSIS pack (offline install)
+scripts/setup-packs.sh    installs the bundled pack via cpackget
 ```
 
 ## Quick start
 
 1. **Code → Create codespace** on this repo (default machine; amd64).
-2. Build the project (cbuild/csolution flow) — see notes below.
-3. *Run Task → `FVP: Start`*, then **F5** (`FVP via fvp-gdb (attach)`).
+2. `postCreate` auto-installs the bundled pack; if a build can't find
+   `PyTorch::ExecuTorch`, run `scripts/setup-packs.sh` once.
+3. Build the project (cbuild/csolution flow).
+4. *Run Task → `FVP: Start`*, then **F5** (`FVP via fvp-gdb (attach)`).
 
-## Status / known gap
+## CMSIS pack
 
-This is a virtual-debug scaffold. The toolchain + FVP install and the debug
-plumbing (`fvp-gdb` → `:3333` → gdb) are wired. The one piece still to wire for a
-clean end-to-end build is the **`PyTorch::ExecuTorch` CMSIS pack** that
-`cmsis-all-ops-project/all_ops.csolution.yml` requires — it needs to be built and
-`cpackget add`-ed (or pulled from a pack index) before `cbuild`. `models/` and
-`all_ops.cproject.yml` are committed as seed data (normally generated upstream).
+`cmsis-all-ops-project/all_ops.csolution.yml` requires the `PyTorch::ExecuTorch`
+pack, which isn't on any public pack index — so it's **bundled** at
+[`packs/PyTorch.ExecuTorch.1.3.1-rc2.pack`](packs/) and installed offline by
+`scripts/setup-packs.sh` (`cpackget add … --force --agree-embedded-license`). The
+`ARM::*` packs (CMSIS, Cortex_DFP, CMSIS-NN) still resolve from the public index,
+so the first build needs network. `models/` and `all_ops.cproject.yml` are
+committed as seed data (normally generated upstream).
 
 ## Lanes
 
