@@ -17,6 +17,14 @@ project:
     - ET_LOG_ENABLED: 1
     - ET_MIN_LOG_LEVEL: Debug
 
+  # embedded_models.S uses relative `.incbin "models/..."` paths, but the assembler
+  # runs from the build tmp dir. Point the assembler include search at the project
+  # dir so GAS resolves .incbin via -I. $ProjectDir()$ is the absolute cproject dir.
+  misc:
+    - for-compiler: GCC
+      ASM:
+        - -Wa,-I,$ProjectDir()$
+
   components:
     - component: ARM::CMSIS:CORE
     - component: ARM::Device:Startup&C Startup

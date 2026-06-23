@@ -67,7 +67,7 @@ def main() -> int:
                 f"    .balign 16",
                 f"    .global {s}_start",
                 f"{s}_start:",
-                f"    .incbin \"{path.as_posix()}\"",
+                f"    .incbin \"{path.relative_to(HERE).as_posix()}\"",
                 f"    .global {s}_end",
                 f"{s}_end:",
                 "",
