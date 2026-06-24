@@ -4,7 +4,11 @@
 set -euo pipefail
 
 echo ">> Bootstrapping vcpkg ..."
+# vcpkg-init references optional shell vars (e.g. ZSH_EVAL_CONTEXT).
+# With nounset enabled this can fail in non-zsh shells, so disable it briefly.
+set +u
 . <(curl -sL https://aka.ms/vcpkg-init.sh)
+set -u
 grep -q "vcpkg-init" ~/.bashrc || \
   printf '\n# Initialize vcpkg\n. ~/.vcpkg/vcpkg-init\n' >> ~/.bashrc
 
@@ -39,5 +43,3 @@ fi
 
 echo ">> Done. Sanity check:"
 command -v FVP_Corstone_SSE-300 cbuild fvp-gdb pyocd arm-none-eabi-gdb || true
-
-pip install -i https://test.pypi.org/simple/ fvp-gdb
