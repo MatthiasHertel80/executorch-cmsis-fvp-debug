@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "CMSIS via fvp-gdb (attach)",
+            "type": "gdbtarget",
+            "request": "attach",
+            "cwd": "${workspaceFolder}/cmsis-all-ops-project",
+            "program": "/workspaces/executorch-cmsis-fvp-debug/cmsis-all-ops-project/out/all_ops/ARMCM55/Debug/all_ops.elf",
+            "gdb": "arm-none-eabi-gdb",
+            "auxiliaryGdb": false,
+            "initCommands": [
+                "set arch arm",
+                "set tdesc filename /dev/null",
+                "monitor reset halt",
+                "load",
+                "monitor reset halt",
+                "tbreak main"
+            ],
+            "target": {
+                "host": "127.0.0.1",
+                "port": "3333"
+            },
+            "cmsis": {
+                "binaryFile": "${command:cmsis-csolution.getBinaryFile}",
+                "updateConfiguration": "no"
+            }
+        }
+    ]
+}

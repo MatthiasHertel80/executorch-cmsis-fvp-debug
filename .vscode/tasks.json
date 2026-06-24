@@ -1,0 +1,138 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "FVP: Start",
+            "type": "shell",
+            "command": "/home/vscode/.local/bin/fvp-gdb",
+            "args": [
+                "--launch",
+                "FVP_Corstone_SSE-300"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Listening for GDB.*",
+                    "endsPattern": "^.*"
+                }
+            }
+        },
+        {
+            "label": "FVP: Stop",
+            "type": "shell",
+            "command": "pkill",
+            "args": [
+                "-f",
+                "fvp-gdb"
+            ]
+        },
+        {
+            "label": "CMSIS Erase",
+            "type": "shell",
+            "command": "pyocd",
+            "options": {
+                "cwd": "${workspaceFolder}/cmsis-all-ops-project",
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "args": [
+                "erase",
+                "--probe",
+                "cmsisdap:",
+                "--chip",
+                "--cbuild-run",
+                "${command:cmsis-csolution.getCbuildRunFile}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Load",
+            "type": "shell",
+            "command": "pyocd",
+            "options": {
+                "cwd": "${workspaceFolder}/cmsis-all-ops-project",
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "args": [
+                "load",
+                "--probe",
+                "cmsisdap:",
+                "--cbuild-run",
+                "${command:cmsis-csolution.getCbuildRunFile}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Run",
+            "type": "shell",
+            "command": "pyocd",
+            "options": {
+                "cwd": "${workspaceFolder}/cmsis-all-ops-project",
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "args": [
+                "gdbserver",
+                "--probe",
+                "cmsisdap:",
+                "--persist",
+                "--reset-run",
+                "--cbuild-run",
+                "${command:cmsis-csolution.getCbuildRunFile}",
+                "--quiet",
+                "--log",
+                "*.cbuild_run,*server=info"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS Load+Run",
+            "dependsOn": [
+                "CMSIS Load",
+                "CMSIS Run"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "CMSIS TargetInfo",
+            "type": "shell",
+            "command": "pyocd",
+            "options": {
+                "cwd": "${workspaceFolder}/cmsis-all-ops-project",
+                "shell": {
+                    "executable": "/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "args": [
+                "list",
+                "--cbuild-run",
+                "${command:cmsis-csolution.getCbuildRunFile}"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

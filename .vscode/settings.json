@@ -1,0 +1,12 @@
+{
+    "debug.hideSlowPreLaunchWarning": true,
+    "debug.showInStatusBar": "never",
+    "memory-inspector.addressPadding": "32bit",
+    "memory-inspector.groupings.groupsPerRow": "Autofit",
+    "memory-inspector.groupings.MAUsPerGroup": 4,
+    "memory-inspector.scrollingBehavior": "Auto-Append",
+    "clangd.arguments": [
+        "--compile-commands-dir=/workspaces/executorch-cmsis-fvp-debug/cmsis-all-ops-project/out/all_ops/ARMCM55/Debug"
+    ],
+    "cmsis-csolution.autoDebugLaunch": false
+}
